@@ -2,12 +2,12 @@ include .env
 export
 
 # Variables
-BINARY_NAME=go-api-template
+BINARY_NAME=todo-backend-go
 GO_FILES=$(shell find . -name '*.go' -not -path './vendor/*')
 MIGRATE_PATH=./migrations
 DB_URL=$(DATABASE_URI)
-APP_NAME=go-api-template
-DOCKER_IMAGE_NAME=go-api-template
+APP_NAME=todo-backend-go
+DOCKER_IMAGE_NAME=todo-backend-go
 DOCKER_TAG=latest
 PORT=8080
 
@@ -17,12 +17,12 @@ all: build
 # Build the application
 build:
 	@echo "Building the application..."
-	go build -o bin/$(BINARY_NAME) cmd/go-api-template/main.go
+	go build -o bin/$(BINARY_NAME) cmd/todo-backend-go/main.go
 
 # Run the application
 run:
 	@echo "Running the application..."
-	go run cmd/go-api-template/main.go
+	go run cmd/todo-backend-go/main.go
 
 # Run tests
 test:

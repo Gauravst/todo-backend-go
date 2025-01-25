@@ -2,6 +2,6 @@ package handlers_test
 
 import "testing"
 
-func TestCreateUser(t *testing.T) {
+func TestCreateTask(t *testing.T) {
 
 }

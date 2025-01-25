@@ -7,18 +7,18 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/gauravst/go-api-template/internal/models"
-	"github.com/gauravst/go-api-template/internal/services"
-	"github.com/gauravst/go-api-template/internal/utils/response"
+	"github.com/gauravst/todo-backend-go/internal/models"
+	"github.com/gauravst/todo-backend-go/internal/services"
+	"github.com/gauravst/todo-backend-go/internal/utils/response"
 	"github.com/go-playground/validator/v10"
 )
 
-func CreateUser(userService services.UserService) http.HandlerFunc {
+func CreateTask(taskService services.TaskService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		var user models.User
+		var task models.Task
 
-		err := json.NewDecoder(r.Body).Decode(&user)
+		err := json.NewDecoder(r.Body).Decode(&task)
 		if errors.Is(err, io.EOF) {
 			response.WriteJson(w, http.StatusBadRequest, response.GeneralError(fmt.Errorf("empty body")))
 			return
@@ -30,7 +30,7 @@ func CreateUser(userService services.UserService) http.HandlerFunc {
 		}
 
 		// Request validation
-		err = validator.New().Struct(user)
+		err = validator.New().Struct(task)
 		if err != nil {
 			validateErrs := err.(validator.ValidationErrors)
 			response.WriteJson(w, http.StatusBadRequest, response.ValidationError(validateErrs))
@@ -39,7 +39,7 @@ func CreateUser(userService services.UserService) http.HandlerFunc {
 
 		// call here services
 
-		err = userService.CreateUser(user)
+		err = taskService.CreateTask(task)
 		if err != nil {
 			response.WriteJson(w, http.StatusInternalServerError, response.GeneralError(err))
 			return
@@ -50,19 +50,19 @@ func CreateUser(userService services.UserService) http.HandlerFunc {
 	}
 }
 
-func GetUser(userService services.UserService) http.HandlerFunc {
+func GetTask(taskService services.TaskService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 	}
 }
 
-func UpdateUser(userService services.UserService) http.HandlerFunc {
+func UpdateTask(taskService services.TaskService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 	}
 }
 
-func DeleteUser(userService services.UserService) http.HandlerFunc {
+func DeleteTask(taskService services.TaskService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 	}

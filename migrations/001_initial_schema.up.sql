@@ -1,10 +1,8 @@
 --- 001_initial_schema.up.sql
-CREATE TABLE users (
+CREATE TABLE todo (
   id SERIAL PRIMARY KEY,
-  name TEXT NOT NULL,
-  username TEXT NOT NULL,
-  email TEXT UNIQUE NOT NULL,
-  password TEXT NOT NULL,
+  task TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

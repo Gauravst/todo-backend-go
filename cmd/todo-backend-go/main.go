@@ -10,12 +10,12 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/gauravst/go-api-template/internal/api/handlers"
-	"github.com/gauravst/go-api-template/internal/api/middleware"
-	"github.com/gauravst/go-api-template/internal/config"
-	"github.com/gauravst/go-api-template/internal/database"
-	"github.com/gauravst/go-api-template/internal/repositories"
-	"github.com/gauravst/go-api-template/internal/services"
+	"github.com/gauravst/todo-backend-go/internal/api/handlers"
+	"github.com/gauravst/todo-backend-go/internal/api/middleware"
+	"github.com/gauravst/todo-backend-go/internal/config"
+	"github.com/gauravst/todo-backend-go/internal/database"
+	"github.com/gauravst/todo-backend-go/internal/repositories"
+	"github.com/gauravst/todo-backend-go/internal/services"
 )
 
 func main() {
