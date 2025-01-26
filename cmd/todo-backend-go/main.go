@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/gauravst/todo-backend-go/internal/api/handlers"
-	"github.com/gauravst/todo-backend-go/internal/api/middleware"
 	"github.com/gauravst/todo-backend-go/internal/config"
 	"github.com/gauravst/todo-backend-go/internal/database"
 	"github.com/gauravst/todo-backend-go/internal/repositories"
@@ -29,13 +28,14 @@ func main() {
 	//setup router
 	router := http.NewServeMux()
 
-	userRepo := repositories.NewUserRepository(database.DB)
-	userService := services.NewUserService(userRepo)
+	userRepo := repositories.NewTaskRepository(database.DB)
+	userService := services.NewTaskService(userRepo)
 
-	router.HandleFunc("GET /api/user", middleware.Auth(handlers.GetUser(userService)))
-	router.HandleFunc("POST /api/user", handlers.CreateUser(userService))
-	router.HandleFunc("PUT /api/user", middleware.Auth(handlers.UpdateUser(userService)))
-	router.HandleFunc("DELETE /api/user", middleware.Auth(handlers.DeleteUser(userService)))
+	router.HandleFunc("GET /api/task", handlers.GetTask(userService))
+	router.HandleFunc("GET /api/task/{id}", handlers.GetTask(userService))
+	router.HandleFunc("POST /api/task", handlers.CreateTask(userService))
+	router.HandleFunc("PUT /api/task/{id}", handlers.UpdateTask(userService))
+	router.HandleFunc("DELETE /api/task/{id}", handlers.DeleteTask(userService))
 
 	// setup server
 	server := &http.Server{

@@ -9,9 +9,10 @@ import (
 )
 
 type TaskService interface {
-	CreateTask(task models.Task) error
+	CreateTask(task *models.Task) error
 	GetTaskByID(id int) (*models.Task, error)
-	UpdateTask(task models.Task) error
+	GetAllTask() ([]*models.Task, error)
+	UpdateTask(id int, task *models.Task) error
 	DeleteTask(id int) error
 }
 
@@ -25,12 +26,12 @@ func NewTaskService(taskRepo repositories.TaskRepository) TaskService {
 	}
 }
 
-func (s *taskService) CreateTask(task models.Task) error {
+func (s *taskService) CreateTask(task *models.Task) error {
 	if task.Task == "" {
 		return errors.New("task cannot be empty")
 	}
 
-	err := s.taskRepo.CreateTask(&task)
+	err := s.taskRepo.CreateTask(task)
 	if err != nil {
 		return fmt.Errorf("failed to create user: %w", err)
 	}
@@ -39,20 +40,29 @@ func (s *taskService) CreateTask(task models.Task) error {
 }
 
 func (s *taskService) GetTaskByID(id int) (*models.Task, error) {
-	user, err := s.taskRepo.GetTaskByID(id)
+	task, err := s.taskRepo.GetTaskByID(id)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get task: %w", err)
 	}
 
-	return user, nil
+	return task, nil
 }
 
-func (s *taskService) UpdateTask(task models.Task) error {
+func (s *taskService) GetAllTask() ([]*models.Task, error) {
+	tasks, err := s.taskRepo.GetAllTask()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get task: %w", err)
+	}
+
+	return tasks, nil
+}
+
+func (s *taskService) UpdateTask(id int, task *models.Task) error {
 	if task.Task == "" {
 		return errors.New("task cannot be empty")
 	}
 
-	err := s.taskRepo.UpdateTask(&task)
+	err := s.taskRepo.UpdateTask(id, task)
 	if err != nil {
 		return fmt.Errorf("failed to update task: %w", err)
 	}

@@ -1,56 +1,45 @@
-# Go API Template
+# Todo List REST API in Go
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Go](https://img.shields.io/badge/Go-1.20-blue)
+![REST API](https://img.shields.io/badge/REST-API-brightgreen)
+![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-blue)
 
-This is a production-ready Go backend API template designed to kickstart your next project.
+A simple REST API for managing a to-do list application, built with Go (Golang). This project is designed for beginners to learn and practice backend development concepts.
+
+---
 
 ## Features
 
-- **Multiple Database Support**: Easily switch between different databases (e.g., PostgreSQL, MySQL, SQLite).
-- **Docker Integration**: Run the application and its dependencies in isolated containers.
-- **Makefile**: Simplify common tasks like building, testing, and running the application.
-- **Database Migrations**: Manage database schema changes with ease.
-- **Configuration Management**: Use `local.yaml` for environment-specific configurations.
-- **Modular Structure**: Organized into `models`, `database`, `handlers`, `middleware`, `repositories`, and `services`.
-- **Testing System**: Includes a robust testing framework for unit and integration tests.
+- **CRUD Operations**:
+  - Create, read, update, and delete tasks.
+- **HTTP Handling**:
+  - Uses Go's `net/http` package to handle HTTP requests and responses.
+- **Database Integration**:
+  - Stores tasks in a PostgreSQL database.
+- **JSON Support**:
+  - Uses JSON for request and response payloads.
+- **Structured Code**:
+  - Follows clean and modular project structure.
 
-## Project Structure
+---
 
-## Prerequisites
+## Skills Practiced
 
-- Go 1.23 or higher
-- Docker and Docker Compose
-- Make file
+- Handling HTTP requests and responses in Go.
+- Structuring a Go project for scalability and maintainability.
+- Working with JSON for data serialization and deserialization.
+- Integrating and interacting with a PostgreSQL database in Go.
 
-### 1. Create a New Repository
+---
 
-Click the **"Use this template"** button at the top right of this repository to create your own copy.
+## API Endpoints
 
-### 2. Configure the Application
+| Method | Endpoint     | Description                    |
+| ------ | ------------ | ------------------------------ |
+| GET    | `/task`      | Get all tasks.                 |
+| GET    | `/task/{id}` | Get a specific task by ID.     |
+| POST   | `/task`      | Create a new task.             |
+| PUT    | `/task/{id}` | Update an existing task by ID. |
+| DELETE | `/task/{id}` | Delete a task by ID.           |
 
-Update the following files with your environment-specific settings:
-
-- **`config/local.yaml`**: Add your application-specific configurations (e.g., server port, logging level).
-- **`.env`**: Add your environment variables (e.g., database credentials, API keys).
-
-### 3. Download Dependencies
-
-`go mod download`
-
-### 4. Run Your App
-
-`make run`
-
-### 5. Database Migrations
-
-- To apply migrations: `make migrate-up`
-- To rollback migrations: `make migrate-down`
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
-
-## License
-
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
-
+---

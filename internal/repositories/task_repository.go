@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"database/sql"
+	"log"
 
 	"github.com/gauravst/todo-backend-go/internal/models"
 )
@@ -10,7 +11,8 @@ import (
 type TaskRepository interface {
 	CreateTask(task *models.Task) error
 	GetTaskByID(id int) (*models.Task, error)
-	UpdateTask(task *models.Task) error
+	GetAllTask() ([]*models.Task, error)
+	UpdateTask(id int, task *models.Task) error
 	DeleteTask(id int) error
 }
 
@@ -26,11 +28,28 @@ func NewTaskRepository(db *sql.DB) TaskRepository {
 }
 
 func (r *taskRepository) CreateTask(task *models.Task) error {
-	query := `INSERT INTO todo (task) VALUES ($1) RETURNING id`
-	err := r.db.QueryRow(query, task.Task).Scan(&task.ID)
+	query := `INSERT INTO todo (task) VALUES ($1) RETURNING *`
+	row := r.db.QueryRow(query, task.Task)
+
+	// Log the query and arguments
+	log.Printf("Executing query: %s with task: %s", query, task.Task)
+
+	// Scan the result
+	err := row.Scan(
+		&task.ID,
+		&task.Task,
+		&task.Status,
+		&task.CreatedAt,
+		&task.UpdatedAt,
+	)
+
 	if err != nil {
+		log.Printf("Error scanning row: %v", err)
 		return err
 	}
+
+	// Log the populated task object
+	log.Printf("Task after Scan: %+v", task)
 
 	return nil
 }
@@ -46,9 +65,43 @@ func (r *taskRepository) GetTaskByID(id int) (*models.Task, error) {
 	return task, nil
 }
 
-func (r *taskRepository) UpdateTask(task *models.Task) error {
+func (r *taskRepository) GetAllTask() ([]*models.Task, error) {
+	query := `SELECT id, task, status FROM todo`
+	rows, err := r.db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var tasks []*models.Task
+
+	for rows.Next() {
+		task := &models.Task{}
+		err := rows.Scan(&task.ID, &task.Task, &task.Status)
+		if err != nil {
+			return nil, err
+		}
+		tasks = append(tasks, task)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return tasks, nil
+}
+
+func (r *taskRepository) UpdateTask(id int, task *models.Task) error {
 	query := `UPDATE todo SET task = $1, status = $2 WHERE id = $3`
-	_, err := r.db.Exec(query, task.Task, task.Status, task.ID)
+	row := r.db.QueryRow(query, task.Task, task.Status, task.ID)
+
+	err := row.Scan(
+		&task.ID,
+		&task.Task,
+		&task.Status,
+		&task.CreatedAt,
+		&task.UpdatedAt,
+	)
 	if err != nil {
 		return err
 	}
